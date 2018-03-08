@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Бовые группы{% endblock %}
+
+{% block sidemenu %}
+     <ul class="nav nav-sidebar">
+     <ul class="nav nav-sidebar">
+
+     </ul><li><a href="{% url 'archive:bg' 0 0%}">Все боевые группы</a></li>
+        <hr>
+        <li><a href="{% url 'archive:bg' 0 1%}">Активные боевые группы</a></li>
+        <li><a href="{% url 'archive:bg' 0 2%}">Замороженные боевые группы</a></li>
+     <hr>
+         {% for bg in BG_list %}
+             <li><a href="{% url 'archive:bg' bg.pk state %}">{{ bg.name }} </a></li>
+         {% endfor %}
+     </ul>
+{% endblock %}
+
+{% block content %}
+    <div class="panel-heading">
+        <h1 class="panel-title">{{ current_bg.name }}</h1>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-lg-4">
+            {% if current_bg.image %}
+                <img src="/{{ current_bg.image.url }}" class="img-thumbnail img-responsive" />
+            {% else %}
+                {% load static %}
+                <img src={% static "images/BG/unnamed.png" %} class="img-thumbnail img-responsive" />
+            {% endif %}
+        </div>
+        <div class="col-xs-12 col-lg-8 main">
+             <p>{{ current_bg.info }} </p>
+             <p>
+             Старший наблюдатель: {%  if  current_bg.last_st_nab_id %}
+             <a href="{% url 'archive:person' current_bg.last_st_nab_id 0 %}">{{ current_bg.last_st_nab }} </a>
+                                  {% else %}
+             {{ current_bg.last_st_nab }}
+                                  {%  endif %}
+             </p>
+
+
+
+        </div>
+    </div>
+{% endblock %}

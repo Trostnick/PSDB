@@ -1,0 +1,35 @@
+<nav class="navbar navbar-inverse navbar-fixed-top">
+         <div class="container-fluid">
+            <div class="navbar-header">
+               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-menu-1" aria-expanded="false">
+                  <span class="glyphicon glyphicon-menu-hamburger"></span>
+               </button>
+               <a href="{% url 'archive:planet' 1 %}" class="navbar-brand"><span class="glyphicon glyphicon-eye-open"></span></a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse-menu-1">
+               
+               <ul class="nav navbar-nav navbar-right">
+                   {% load menubuilder %}
+                     {% menu main_menu %}
+                     {% for menu in menuitems %}
+                         <li><a href="{{ menu.url }}">{{ menu.title }}</a></li>
+                     {% endfor %}
+                     {% if user.is_authenticated%}
+                         <li class="dropdown"><a href="{% url 'shedule:account' %}" class="dropdown-toggle" data-toggle="dropdown">Приветствую тебя, {{ user.watcher }} <span class="caret"></span></a>
+                             <ul class="dropdown-menu" role="menu">
+                                 {% menu dropdown_menu %}
+                                {% for menu in menuitems %}
+                                    <li><a href="{{ menu.url }}">{{ menu.title }}</a></li>
+                                    {% if forloop == 1 %}
+                                        <li class="divider"></li>
+                                    {% endif %}
+                             {% endfor %}
+                             </ul>
+                         </li>
+                     {% else %}
+                         <li><a href="{% url 'shedule:login' %}">Войти</a> </li>
+                     {% endif %}
+               </ul>
+            </div>
+         </div>
+</nav>

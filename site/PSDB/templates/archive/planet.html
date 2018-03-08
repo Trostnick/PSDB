@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block title %}Планеты{% endblock %}
+
+{% block sidemenu %}
+    <ul class="nav nav-sidebar">
+        {% for planet in Planet_list %}
+            <li><a href="{% url 'archive:planet' planet.pk %}">{{ planet }} </a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <div class="panel-heading">
+        <h1 class="panel-title">{{ current_planet.name }} </h1>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-lg-4">
+            {% if current_planet.image %}
+                <img src="/{{ current_planet.image.url }}" class="img-thumbnail img-responsive" alt="Здесь могла быть ваша реклама"/>
+            {% else %}
+                {% load static %}
+                <img src={% static "images/Planet/unnamed.png" %} class="img-thumbnail img-responsive" />
+            {% endif %}
+        </div>
+        <div class="col-xs-12 col-lg-8 main">
+
+
+            <p>{{ current_planet.info }} </p>
+        </div>
+    </div>
+{% endblock %}

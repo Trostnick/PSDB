@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Аккаунт{% endblock %}
+
+{% block sidemenu %}
+    <ul class="nav nav-sidebar">
+        <!--<li><a href="#">Мастерклассы</a></li>
+        <li><a href="#">Высадки</a></li>-->
+        <li><a href="{% url 'shedule:mark' %}">Баллы</a></li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+    <div class="panel-heading">
+        <h1 class="panel-title">{{ watcher.name }} </h1>
+    </div>
+    <div>
+        <div class="col-xs-12 col-lg-12">
+                             {% if watcher_missions %}
+                                <div class="table-responsive">
+                                   <table class="table table-striped">
+                                      <thead>
+                                         <tr>
+                                            <th>Вахта</th>
+                                            <th>Планета</th>
+                                            <th>БГ</th>
+                                            <th>Баллы</th>
+                                         </tr>
+                                      </thead>
+                                      <tbody>
+                                      {% for  in mission_list %}
+                                         <tr>
+                                                <td>{{ mission.watch }}</td>
+                                                <td>{{ mission.planet }}</td>
+                                                <td>{{ mission.bg }}</td>
+                                                <td>{{ mission.point.value}}</td>
+                                         </tr>
+                                      {% endfor %}
+                                      </tbody>
+                                   </table>
+                                </div>
+                             {% endif %}
+
+                                <p class="pull-left visible-xs">
+                                   <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Назад</button>
+                                </p>
+                             </div>
+                          </div>
+{% endblock %}

@@ -1,0 +1,64 @@
+ <!DOCTYPE html>
+<html>
+   <head>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=devise-width, initial-scale=1">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+      <link href="style.css" rel="stylesheet">
+      <title>Главная страница</title>
+   </head>
+   <body>
+      <nav class="navbar navbar-inverse navbar-fixed-top">
+         <div class="container">
+            <div class="navbar-header">
+               <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-menu-1" aria-expanded="false">
+                  <span class="glyphicon glyphicon-menu-hamburger"></span>
+               </button>
+               <a href="main.html" class="navbar-brand"><span class="glyphicon glyphicon-eye-open"></span></a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-collapse-menu-1">
+               <form class="navbar navbar-form navbar-left">
+                  <div class="form-group">
+                     <input type="text" name="search" placeholder="Поиск">
+                  </div>
+                  <div class="form-group">
+                     <input type="submit" class="btn btn-primary" name="confirm" value="Ок">
+                  </div>
+               </form>
+               <ul class="nav navbar-nav">
+                  <li><a href="people.html">Персонал</a></li>
+                  <li><a href="battlegroup.html">Боевые группы</a></li>
+                  <li><a href="mission.html">Высадки</a></li>
+                  <li><a href="planet.html">Планеты</a></li>
+                  <li><a href="documents.html">Разведданные</a></li>
+                  <li><a href="shedule.html">Расписание</a></li>
+                  <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Приветствую тебя, Наблюдатель <span class="caret"></span></a>
+                     <ul class="dropdown-menu" role="menu">
+                        <li><a href="room.html">Личный кабинет</a></li>
+                        <li><a href="#">Редактировать</a></li>
+                        <li class="divider"></li>
+                        <li><a href="signin.html">Выход</a></li>
+                     </ul>
+                  </li>
+               </ul>
+            </div>
+         </div>
+      </nav>
+
+      <div class="container-fluid">
+         <img class="img-responsive image" src="big_eye.png" alt="big_logo">
+      </div>
+
+      <div class="navbar-inverse navbar-fixed-bottom">
+         <div class="navbar-inner">
+            <div class="container">
+               Архив базы <b>Ц.У.Н.А.М.И.</b> ver 2.0<br>
+               3583 год
+            </div>
+         </div>
+      </div>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+   </body>
+</html>

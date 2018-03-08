@@ -1,0 +1,35 @@
+body {
+	background: fixed url("/static/images/back_5.jpg") center;
+	padding-top: 70px;
+	padding-bottom: 70px;
+}
+
+.navbar-inverse {
+	color: #FFFFFF;
+}
+
+.image {
+	margin: auto;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:active {
+	text-decoration: underline;
+}
+
+.panel-info {
+	border: 1px solid gray;
+	background: #D3D3D3;
+}
+
+.panel-info .panel-heading {
+	background: gray;
+	color: #FFFFFF;
+}
+
+hr {
+	color: black;
+}

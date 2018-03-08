@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Высадки{% endblock %}
+
+{% block sidemenu %}
+    <ul class="nav nav-sidebar">
+    <ul class="nav nav-sidebar">
+
+        <li><a href="{% url 'archive:mission_watch' 0 1%}">1 вахта</a></li>
+        <li><a href="{% url 'archive:mission_watch' 0 2%}">2 вахта</a></li>
+        <li><a href="{% url 'archive:mission_watch' 0 3%}">3 вахта</a></li>
+        <li><a href="{% url 'archive:mission_watch' 0 4%}">4 вахта</a></li>
+        <li><a href="{% url 'archive:mission_watch' 0 5%}">5 вахта</a></li>
+        <li><a href="{% url 'archive:mission_watch' 0 6%}">6 вахта</a></li>
+        <li><a href="{% url 'archive:mission_watch' 0 7%}">7 вахта</a></li>
+        <li><a href="{% url 'archive:mission_watch' 0 8%}">8 вахта</a></li>
+        <li><a href="{% url 'archive:mission_watch' 0 9%}">9 вахта</a></li>
+     <hr>
+        {% for mission in Mission_list %}
+            <li><a href="{% url 'archive:mission_watch' mission.pk state%}">{{ mission }} </a></li>
+        {% endfor %}
+    </ul>
+
+    
+{% endblock %}
+
+{% block content %}
+    <div class="panel-heading">
+            <h1 class="panel-title">Высадки</h1>
+         </div>
+         <div class="panel-body">
+            <div class="row">
+
+               <div class="col-xs-6 col-lg-9 main">
+                  <p>Цель     : {{ current_mission.target}} </p>
+                  
+                  {%  if  current_mission.info %}
+                      <p>{{ current_mission.info }} </p>
+                  {%  endif %}
+
+                  
+                  <p>Результат : {{ current_mission.result}} </p>
+                  {%  if  current_mission.planet_id %}
+                      <p>Планета: <a href="{% url 'archive:planet' current_mission.planet_id %}">{{ current_mission.planet.name }} </a></p>
+                  {% else %}
+                      <p>Планета:  {{ current_mission.planet_text}}</p>
+                   {%  endif %}
+                  <p></p>
+                  {%  if  current_mission.bg_id %}
+                     <p>Боевая группа: <a href="{% url 'archive:bg' current_mission.bg_id 0 %}">{{ current_mission.bg }} </a></p>
+                  {%  endif %}
+
+               </div>
+            </div>
+         </div>
+{% endblock %}

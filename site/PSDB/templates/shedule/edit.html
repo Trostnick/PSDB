@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Редактирование{% endblock %}
+
+{% block sidemenu %}
+    <ul class="nav nav-sidebar">
+        <!--<li><a href="#">Мастерклассы</a></li>
+        <li><a href="#">Высадки</a></li>-->
+        <li><a href="{% url 'shedule:mark' %}">Баллы</a></li>
+    </ul>
+{% endblock %}
+
+{% block content %}
+ <div class="panel-heading">
+        <h1 class="panel-title">{{ watcher.name }} <a class="btn btn-danger pull-right" href="{% url 'shedule:account' %}" role="button"><span class="glyphicon glyphicon-pencil"></span> Отмена</a></h1>
+    </div>
+
+        <div class="row">
+               <div class="col-xs-12 col-lg-4">
+                  {% if watcher.photo %}
+                  <img src="/{{ watcher.photo.url }}" class="img-thumbnail img-responsive" alt="Здесь могла быть ваша реклама"/>
+                  {%endif%}
+               </div>
+               <div class="col-xs-12 col-lg-8">
+                 <form action="{% url 'shedule:edit' %}" method="post">
+                     {% csrf_token %}
+                       <p>Имя:</p><input type="text" name = 'name' class="form-control" value="{{ watcher.name }}" >
+                       <p>БГ:</p><input type="text" name="bg" class="form-control" value="{{ watcher.bg }}">
+                       <p>Информация:</p><input type="text" name="info" class="form-control" value="{{ watcher.info }}">
+                       <input class="btn btn-block btn-primary" type="submit" value="Изменить">
+                 </form>
+               </div>
+        </div>
+{% endblock %}

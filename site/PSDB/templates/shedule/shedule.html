@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+
+{% block title %}Расписание{% endblock %}
+
+{% block sidemenu %}
+    <ul class="nav nav-sidebar">
+        {% for day in day_list %}
+            <li><a href="{% url 'shedule:shedule' day %}">День {{ day }}</a></li>
+        {% endfor %}
+    </ul>
+    <hr>
+    {% if lesson_list %}
+        <ul class="nav nav-sidebar">
+            <p>1 час<p>
+            {% for lesson in lesson_list_1 %}
+                <li><a href="{% url 'shedule:lesson' lesson.day lesson.pk %}">{{ lesson.name }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if lesson_list_2 %}
+        <ul class="nav nav-sidebar">
+            <p>2 час<p>
+            {% for lesson in lesson_list_2 %}
+                <li><a href="{% url 'shedule:lesson' lesson.day lesson.pk %}">{{ lesson.name }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if lesson_list_3 %}
+        <ul class="nav nav-sidebar">
+            <p>специализации<p>
+            {% for lesson in lesson_list_3 %}
+                <li><a href="{% url 'shedule:lesson' lesson.day lesson.pk %}">{{ lesson.name }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% if current_lesson %}
+        <div class="panel-heading">
+            <h1 class="panel-title">{{ current_lesson.name }} </h1>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-xs-8 col-lg-10">
+                    <ul>
+                        <li>Ведет: {{current_lesson.teacher.name }}</li>
+                        <li>Место: {{ current_lesson.place }}</li>
+                        <li>Время начала:{{ current_lesson.start_time }}</li>
+                        <li>Занято мест: {{ current_lesson.get_short_count }}</li>
+                    </ul>
+                    <p>{{ current_lesson.short_info }}</p>
+                </div>
+                <div class="col-xs-4 col-lg-2">
+                    <form action="{% url 'shedule:enroll' current_lesson.day current_lesson.pk %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" value="enroll" class="btn btn-primary" ><span class="glyphicon glyphicon-plus"></span> Записаться</button>
+                    </form>
+                </div>
+                <div class="col-xs-12 col-lg-12">
+                     {% if current_lesson.students.all %}
+                        <div class="table-responsive">
+                           <table class="table table-striped">
+                              <thead>
+                                 <tr>
+                                    <th>Номер</th>
+                                    <th>Имя</th>
+                                    <th>БГ</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                              {% for student in current_lesson.students.all %}
+                                 <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ student.name }}</td>
+                                        <td>{{ student.bg }}</td>
+                                 </tr>
+                              {% endfor %}
+                              </tbody>
+                           </table>
+                        </div>
+                     {% endif %}
+                     {% if messages %}
+                         {% for message in messages %}
+                             <div
+                                 {% if message.tags == 'error' %} class="alert alert-danger"
+                                 {% elif message.tags == 'succes' %} class="alert alert-"
+                                 {% endif %}>
+                                              {{ message }}
+                             </div>
+                        {% endfor %}
+                     {% endif %}
+                        <p class="pull-left visible-xs">
+                           <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">Назад</button>
+                        </p>
+                     </div>
+                  </div>
+               </div>
+            {% else %}
+                <h1>{{ lesson_list_1.first.day }} день</h1>
+                <hr>
+                {% if lesson_list_1 %}
+                       <h2> 1 час</h2>
+                       <div class="table-responsive">
+                           <table class="table table-striped">
+                              <thead>
+                                 <tr>
+                                    <th>Время</th>
+                                    <th>Название</th>
+                                    <th>Ведет</th>
+                                    <th>Место</th>
+                                    <th>Занято место</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                              {% for lesson in lesson_list_1 %}
+                                <a href = "{% url 'shedule:lesson' lesson.day lesson.pk %}"><tr>
+                                        <td>{{ lesson.start_time }}</td>
+                                        <td>{{ lesson.name }}</td>
+                                        <td>{{ lesson.teacher }}</td>
+                                        <td>{{ lesson.place }}</td>
+                                        <td>{{ lesson.get_short_count }}</td>
+                                 </tr></a>
+                              {% endfor %}
+                              </tbody>
+                           </table>
+                        </div>
+                {% endif %}
+{% if lesson_list_2 %}
+                        <h2> 2 час</h2>
+                       <div class="table-responsive">
+                           <table class="table table-striped">
+                              <thead>
+                                 <tr>
+                                    <th>Время</th>
+                                    <th>Название</th>
+                                    <th>Ведет</th>
+                                    <th>Место</th>
+                                    <th>Занято место</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                              {% for lesson in lesson_list_2 %}
+                                <a href = "{% url 'shedule:lesson' lesson.day lesson.pk %}"><tr>
+                                        <td>{{ lesson.start_time }}</td>
+                                        <td>{{ lesson.name }}</td>
+                                        <td>{{ lesson.teacher }}</td>
+                                        <td>{{ lesson.place }}</td>
+                                        <td>{{ lesson.get_short_count }}</td>
+                                 </tr></a>
+                              {% endfor %}
+                              </tbody>
+                           </table>
+                        </div>
+                {% endif %}
+{% if lesson_list_3 %}
+                        <h2> Специализации </h2>
+                       <div class="table-responsive">
+                           <table class="table table-striped">
+                              <thead>
+                                 <tr>
+                                    <th>Время</th>
+                                    <th>Название</th>
+                                    <th>Ведет</th>
+                                    <th>Место</th>
+                                    <th>Занято место</th>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                              {% for lesson in lesson_list_3 %}
+                                <a href = "{% url 'shedule:lesson' lesson.day lesson.pk %}"><tr>
+                                        <td>{{ lesson.start_time }}</td>
+                                        <td>{{ lesson.name }}</td>
+                                        <td>{{ lesson.teacher }}</td>
+                                        <td>{{ lesson.place }}</td>
+                                        <td>{{ lesson.get_short_count }}</td>
+                                 </tr></a>
+                              {% endfor %}
+                              </tbody>
+                           </table>
+                        </div>
+                {% endif %}
+     {% endif %}
+{% endblock %}

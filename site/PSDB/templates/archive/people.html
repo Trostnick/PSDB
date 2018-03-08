@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Наблюдатели{% endblock %}
+
+{% block sidemenu %}
+    <ul class="nav nav-sidebar">
+        <li><a href="{% url 'archive:person' 0 0%}">Все сотрудники базы</a></li>
+        <hr>
+        <li><a href="{% url 'archive:person' 0 1%}">Старшие наблюдатели</a></li>
+        <li><a href="{% url 'archive:person' 0 2%}">Отдел 10К</a></li>
+    </ul>
+    <hr>
+    <ul class="nav nav-sidebar">
+        {% for person in Person_list %}
+            <li><a href="{% url 'archive:person' person.pk state%}">{{ person }} </a></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
+{% block content %}
+        <div class="panel-heading">
+            <h1 class="panel-title">{{ current_person.name }}</h1>
+        </div>
+        <div class="row">
+               <div class="col-xs-12 col-lg-4">
+                 {% if current_person.image %}
+                     <img src="/{{ current_person.image.url }}" class="img-thumbnail img-responsive" />
+                 {% else %}
+                     {% load static %}
+                          <img src={% static "images/Person/unnamed.png" %} class="img-thumbnail img-responsive" />
+                 {% endif %}
+               </div>
+               <div class="col-xs-12 col-lg-8">
+                  <p>Краткая информация:
+                     <ul>
+                        <li>Дата рождения: {{ current_person.birth_date }}</li>
+                        {%  if  current_person.planet %}
+                            <li>Планета: 
+                             
+                            <a href="{% url 'archive:planet' current_person.planet_id %}">{{ current_person.planet }} </a></li>
+                        {% else %}
+                         <li>Место рождения:  {{ current_person.were_burn}}</li> 
+                        {%  endif %}
+                         
+                         <li>Отец:  {{ current_person.father}}</li>
+                         <li>Мать: {{ current_person.mother }}</li>
+                         <li>Образование: {{ current_person.education }}</li>
+                         <li>Работа до ИКРЦ: {{ current_person.work_before }}</li>
+                         <li>Прибытие в ИКРЦ: {{ current_person.coming_date }}</li>
+                         <li>Карьера: {{ current_person.career  }}</li>
+                     </ul>
+                  </p>
+                  <p>{{ current_person.info }}</p>
+               </div>
+        </div>
+{% endblock %}
