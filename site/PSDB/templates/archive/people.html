@@ -44,10 +44,18 @@
                          
                          <li>Отец:  {{ current_person.father}}</li>
                          <li>Мать: {{ current_person.mother }}</li>
-                         <li>Образование: {{ current_person.education }}</li>
-                         <li>Работа до ИКРЦ: {{ current_person.work_before }}</li>
+                         <li>Образование:<ul> {% for edu in edu_list %}
+                                <li>{{ edu }} </li>
+                             {% endfor %}</ul></li>
+                         <li>Работа до ИКРЦ:<ul> {% for work in work_list %}
+                                <li>{{ work }} </li>
+                             {% endfor %}</ul></li>
                          <li>Прибытие в ИКРЦ: {{ current_person.coming_date }}</li>
-                         <li>Карьера: {{ current_person.career  }}</li>
+                         <li>Карьера:<ul>
+                             {% for info in info_list %}
+                                <li>{{ info }} </li>
+                             {% endfor %}</ul>
+                         </li>
                      </ul>
                   </p>
                   <p>{{ current_person.info }}</p>

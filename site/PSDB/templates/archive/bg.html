@@ -31,8 +31,9 @@
             {% endif %}
         </div>
         <div class="col-xs-12 col-lg-8 main">
-             <p>{{ current_bg.info }} </p>
-             <p>
+             {% for info in info_list %}
+                <p>{{ info }} </p>
+             {% endfor %}
              Старший наблюдатель: {%  if  current_bg.last_st_nab_id %}
              <a href="{% url 'archive:person' current_bg.last_st_nab_id 0 %}">{{ current_bg.last_st_nab }} </a>
                                   {% else %}

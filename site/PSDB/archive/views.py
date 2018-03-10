@@ -38,9 +38,11 @@ def bg(request,pk,state):
         current_bg = BG.objects.get(pk=pk)
     else:
         current_bg = bg_list.first()
+    info_list = current_bg.info.split("\n")
     context = {'BG_list': bg_list,
-               'current_bg': current_bg,
-               'state': state}
+           'current_bg': current_bg,
+           'state': state,
+           'info_list': info_list}
     return render(request, 'archive/bg.html', context)
 
 
@@ -54,9 +56,15 @@ def person(request,pk,state):
         current_person = Person.objects.get(pk=pk)
     else:
         current_person = person_list.first()
+    info_list = current_person.career.split("\n")
+    work_list = current_person.work_before.split("\n")
+    edu_list = current_person.education.split("\n")
     context = {'Person_list': person_list,
                'current_person': current_person,
-               'state': state}
+               'state': state,
+               'info_list': info_list,
+               'work_list': work_list,
+               'edu_list': edu_list}
     return render(request, 'archive/people.html', context)
 
 
@@ -66,8 +74,10 @@ def planet(request,pk):
         current_planet=Planet.objects.get(pk=pk)
     else:
         current_planet=planet_list.first()
+    info_list = current_planet.info.split("\n")
     context = {'Planet_list': planet_list,
-               'current_planet': current_planet}
+               'current_planet': current_planet,
+               'info_list': info_list}
     return render(request, 'archive/planet.html', context)
 
 
