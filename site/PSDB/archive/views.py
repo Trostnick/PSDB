@@ -1,10 +1,13 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+import datetime
+from django.contrib import messages
+from django.contrib.auth import authenticate, logout, login
 from django.shortcuts import render
 from .models import BG
 from .models import Planet
 from .models import Person
 from .models import Mission
+from .models import Challenge
 from django.shortcuts import render, HttpResponseRedirect, get_object_or_404, reverse
 
 
@@ -89,14 +92,31 @@ def mission_bg(request,pk,state):#state - id боевой группы
     
     mission_list = Mission.objects.all()
     mission_list = mission_list.filter(bg__pk=state)
-    BG_list = BG.objects.all()
+    bg_list=BG.objects.all()
+    if not mission_list:
+        mission_list=Mission.objects.filter(bg__pk=bg_list[0].pk)
     
     if mission_list.filter(pk=pk):
         current_mission = Mission.objects.get(pk=pk)
     else:
         current_mission = mission_list.first()
+
+    if current_mission:
+        target_list = current_mission.target.split("\n")
+        info_list = current_mission.info.split("\n")
+        BG_list = current_mission.bg.all()
+        Planet_list = current_mission.planet.all()
+    else:
+        target_list = list()
+        info_list = list()
+        BG_list = list()
+        Planet_list = list()
     
-    context = {'BG_list': BG_list,
+    context = {'BGs': bg_list,
+               'target_list': target_list,
+               'info_list': info_list,
+               'BG_list': BG_list,
+               'Planet_list': Planet_list,
                'Mission_list': mission_list,
                'current_mission': current_mission,
                'state': state}
@@ -112,8 +132,74 @@ def mission_watch(request,pk,state):#state - id боевой группы
         current_mission = Mission.objects.get(pk=pk)
     else:
         current_mission = mission_list.first()
+
+    target_list = current_mission.target.split("\n")
+    info_list = current_mission.info.split("\n")
+    BG_list = current_mission.bg.all()
+    Planet_list = current_mission.planet.all()
+    Watch_list = Mission.objects.all().order_by('watch').values_list('watch', flat=True).distinct()
     
-    context = {'Mission_list': mission_list,
+    context = {'BG_list': BG_list,
+               'info_list': info_list,
+               'target_list': target_list,
+               'Planet_list': Planet_list,
+               'Watch_list': Watch_list,
+               'Mission_list': mission_list,
                'current_mission': current_mission,
                'state': state}
     return render(request, 'archive/mission_watch.html', context)
+
+def challenge(request, day, pk):
+    day_list = Challenge.objects.all().order_by('date').values_list('date', flat=True).distinct()
+    if day:
+        challenge_list = Challenge.objects.filter(date=day)
+    else:
+        challenge_list = Challenge.objects.filter(date=int(datetime.date.today().day))
+    challenge_list_1 = challenge_list.filter(level=1)
+    challenge_list_2 = challenge_list.filter(level=2)
+    if challenge_list.filter(pk=pk):
+        current_challenge = Challenge.objects.get(pk=pk)
+
+    else:
+        current_challenge = Challenge.objects.all().first()
+    nabs_list = current_challenge.nabs.all()
+
+    context = {'challenge_list' : challenge_list,
+               'challenge_list_1': challenge_list_1,
+               'challenge_list_2': challenge_list_2,
+               'day_list': day_list,
+               'nabs_list': nabs_list,
+               'user': request.user,
+               'current_challenge': current_challenge,}
+    return render(request, 'archive/challenges.html', context)
+
+
+def enroll(request, day, pk):
+    challenge = get_object_or_404(Challenge, pk=pk)
+    if (request.user.is_authenticated):
+        watcher = request.user.watcher
+        students = challenge.nabs.all()
+
+        answer = (not watcher in students)
+        if (not answer):
+            messages.error(request, 'Вы уже записаны на этот МК')
+        else:
+            answer = False
+            if challenge.level==1:
+                for challenge in Challenge.objects.exclude(level=1):
+                    if watcher in challenge.nabs.all():
+                        answer = True
+            else:
+                for challenge in Challenge.objects.exclude(level=2):
+                    if watcher in challenge.nabs.all():
+                        answer = True
+            if answer:
+                messages.error(request, 'Вы уже выбрали непростое задание')
+            else:
+                challenge.nabs.add(watcher)
+                challenge.save()
+                messages.success(request, "Готово! Вы записались на это занятие")
+    else:
+        messages.error(request, 'Войдите в систему, прежде чем записываться')
+    return HttpResponseRedirect(reverse('archive:challenge', args=(day, pk,)))
+

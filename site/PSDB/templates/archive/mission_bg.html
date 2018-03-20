@@ -6,7 +6,7 @@
     <ul class="nav nav-sidebar">
     <ul class="nav nav-sidebar">
 
-        {% for BG in BG_list %}
+        {% for BG in BGs %}
             <li><a href="{% url 'archive:mission_bg' 0 BG.pk%}">{{ BG.name }} </a></li>
         {% endfor %}
      <hr>
@@ -26,17 +26,26 @@
             <div class="row">
 
                <div class="col-xs-6 col-lg-9 main">
-                  <p>Цель     : {{ current_mission.target}} </p>
-
-                  {%  if  current_mission.info %}
-                      <p>{{ current_mission.info }} </p>
+                  {%  if  current_mission.target %}
+                      {% for target in target_list %}
+                          <p>{{ target }} </p>
+                      {% endfor %}
                   {%  endif %}
 
-                  <p>Результат : {{ current_mission.result}} </p>
-                  
 
-                  {%  if  current_mission.planet_id %}
-                      <p>Планета: <a href="{% url 'archive:planet' current_mission.planet_id %}">{{ current_mission.planet.name }} </a></p>
+
+                  <p>Результат : {{ current_mission.result}} </p>
+
+                  {%  if  current_mission.info %}
+                      {% for info in info_list %}
+                          <p>{{ info }} </p>
+                      {% endfor %}
+                  {%  endif %}
+
+                  {%  if  Planet_list %}
+                      <p>Планета: {% for planet in Planet_list %}
+                          <a href="{% url 'archive:planet' planet.id %}">{{ planet.name }} </a></p>
+                                    {% endfor %}
                   {% else %}
                       <p>Планета:  {{ current_mission.planet_text}}</p>
                    {%  endif %}
@@ -44,8 +53,10 @@
 
 
                   <p></p>
-                  {%  if  current_mission.bg_id %}
-                     <p>Боевая группа: <a href="{% url 'archive:bg' current_mission.bg_id 0 %}">{{ current_mission.bg.name }} </a></p>
+                  {%  if  BG_list %}
+                     <p>Боевая группа: {% for bg in BG_list %}
+                         <a href="{% url 'archive:bg' bg.id 0 %}">{{ bg.name }} </a></p>
+                                        {% endfor %}
                   {%  endif %}
 
                </div>

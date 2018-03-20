@@ -5,16 +5,10 @@
 {% block sidemenu %}
     <ul class="nav nav-sidebar">
     <ul class="nav nav-sidebar">
+            {% for watch in Watch_list %}
+        <li><a href="{% url 'archive:mission_watch' 0 watch %}">{{ watch }} вахта</a></li>
+        {%endfor%}
 
-        <li><a href="{% url 'archive:mission_watch' 0 1%}">1 вахта</a></li>
-        <li><a href="{% url 'archive:mission_watch' 0 2%}">2 вахта</a></li>
-        <li><a href="{% url 'archive:mission_watch' 0 3%}">3 вахта</a></li>
-        <li><a href="{% url 'archive:mission_watch' 0 4%}">4 вахта</a></li>
-        <li><a href="{% url 'archive:mission_watch' 0 5%}">5 вахта</a></li>
-        <li><a href="{% url 'archive:mission_watch' 0 6%}">6 вахта</a></li>
-        <li><a href="{% url 'archive:mission_watch' 0 7%}">7 вахта</a></li>
-        <li><a href="{% url 'archive:mission_watch' 0 8%}">8 вахта</a></li>
-        <li><a href="{% url 'archive:mission_watch' 0 9%}">9 вахта</a></li>
      <hr>
         {% for mission in Mission_list %}
             <li><a href="{% url 'archive:mission_watch' mission.pk state%}">{{ mission }} </a></li>
@@ -32,22 +26,37 @@
             <div class="row">
 
                <div class="col-xs-6 col-lg-9 main">
-                  <p>Цель     : {{ current_mission.target}} </p>
-                  
-                  {%  if  current_mission.info %}
-                      <p>{{ current_mission.info }} </p>
+{%  if  current_mission.target %}
+                      {% for target in target_list %}
+                          <p>{{ target }} </p>
+                      {% endfor %}
                   {%  endif %}
 
-                  
+
+
                   <p>Результат : {{ current_mission.result}} </p>
-                  {%  if  current_mission.planet_id %}
-                      <p>Планета: <a href="{% url 'archive:planet' current_mission.planet_id %}">{{ current_mission.planet.name }} </a></p>
+
+                  {%  if  current_mission.info %}
+                      {% for info in info_list %}
+                          <p>{{ info }} </p>
+                      {% endfor %}
+                  {%  endif %}
+
+                  {%  if  Planet_list %}
+                      <p>Планета: {% for planet in Planet_list %}
+                          <a href="{% url 'archive:planet' planet.id %}">{{ planet.name }} </a></p>
+                                    {% endfor %}
                   {% else %}
                       <p>Планета:  {{ current_mission.planet_text}}</p>
                    {%  endif %}
+
+
+
                   <p></p>
-                  {%  if  current_mission.bg_id %}
-                     <p>Боевая группа: <a href="{% url 'archive:bg' current_mission.bg_id 0 %}">{{ current_mission.bg }} </a></p>
+                  {%  if  BG_list %}
+                     <p>Боевая группа: {% for bg in BG_list %}
+                         <a href="{% url 'archive:bg' bg.id 0 %}">{{ bg.name }} </a></p>
+                                        {% endfor %}
                   {%  endif %}
 
                </div>

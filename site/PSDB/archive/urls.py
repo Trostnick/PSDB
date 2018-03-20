@@ -1,5 +1,7 @@
+
 from django.conf.urls import url
-from . import views
+
+import views
 
 app_name = 'archive'
 
@@ -14,4 +16,6 @@ urlpatterns = [
     url(r'^bg/(?P<pk>[0-9]+)/(?P<state>[0-9]+)/$', views.bg, name='bg'),
     url(r'^mission/(?P<pk>[0-9]+)/bg/(?P<state>[0-9]+)/$', views.mission_bg, name='mission_bg'),
     url(r'^mission/(?P<pk>[0-9]+)/watch/(?P<state>[0-9]+)/$', views.mission_watch, name='mission_watch'),
+    url(r'^challenge/(?P<day>[0-9]+)/(?P<pk>[0-9]+)/$', views.challenge, name='challenge'),
+    url(r'^enroll/(?P<day>[0-9]+)/(?P<pk>[0-9]+)/$', views.enroll, name='enroll'),
     ]

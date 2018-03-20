@@ -7,7 +7,7 @@ import shedule.models
 
 class Planet(models.Model):
     name = models.CharField(max_length=100)
-    info = models.TextField()
+    info = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to='static/images/Planet/', blank=True)
 
     def __unicode__(self):
@@ -46,13 +46,13 @@ class BG(models.Model):
 
 class Mission(models.Model):
     name = models.CharField(max_length=50)
-    watch = models.IntegerField()
-    target = models.TextField()
-    info = models.TextField()
+    watch = models.IntegerField(null=True)
+    target = models.TextField(null=True)
+    info = models.TextField(null=True, blank=True)
     result = models.CharField(max_length=50)
-    planet_text = models.TextField(blank=True)
-    planet = models.ForeignKey(Planet, null=True, on_delete=models.SET_NULL, blank=True)
-    bg = models.ForeignKey(BG, null=True, on_delete=models.SET_NULL, blank=True)
+    planet = models.ManyToManyField(Planet, related_name='missions', blank=True)
+    planet_text = models.TextField(null=True, blank=True)
+    bg = models.ManyToManyField(BG, related_name='missions', blank=True)
 
     def __unicode__(self):
         return self.name
@@ -66,6 +66,17 @@ class Point(models.Model):
     def __unicode__(self):
         name = self.watcher.name + ' ' + self.mission.name
         return name
-    
+
+
+class Challenge(models.Model):
+    name = models.TextField()
+    info = models.TextField()
+    level = models.IntegerField()
+    date = models.IntegerField()
+    nabs = models.ManyToManyField(shedule.models.Watcher, related_name='challenges', blank=True)
+
+    def __unicode__(self):
+        name = self.name
+        return name
 
 
